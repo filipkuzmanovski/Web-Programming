@@ -11,9 +11,9 @@
 <h2>Dishes assigned:</h2>
 <ul>
   <li th:each="dish : ${chefDishes}"
-      th:text="${dish.name} + ' (' + ${dish.cuisine} + ', ' + ${dish.preperationTime} + ' min)'"></li>
+      th:text="${dish.name} + ' (' + ${dish.cuisine} + ', ' + ${dish.preparationTime} + ' min)'"></li>
 </ul>
-
 <a th:href="@{/servlet/listChefs}">Back to Chefs List</a>
+
 </body>
 </html>

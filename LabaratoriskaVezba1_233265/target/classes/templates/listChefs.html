@@ -8,13 +8,14 @@
 <h1>Welcome to Our Restaurant</h1>
 <h2>Choose a chef:</h2>
 
-<form th:action="@{/servlet/dish}" method="post">
+<form th:action="@{/dishes}" method="get">
     <div th:each="chef : ${chefsList}">
-        <input type="radio" th:name="chefId" th:value="${chef.id}"/>
-        <span th:text="${chef.firstName} + ' ' + ${chef.lastName} + ' (Bio: ' + ${chef.bio} + ')'"></span>
+        <input type="radio" th:name="chefId" th:value="${chef.id}" required/>
+        <span th:text="${chef.firstName} + ' ' + ${chef.lastName} + ' ' + ${chef.getBio()}"></span>
         <br/>
     </div>
     <input type="submit" value="Select Chef"/>
 </form>
+
 </body>
 </html>

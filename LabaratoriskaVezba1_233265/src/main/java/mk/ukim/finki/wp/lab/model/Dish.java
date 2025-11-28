@@ -1,35 +1,55 @@
 package mk.ukim.finki.wp.lab.model;
 
-import lombok.Getter;
-
-@Getter
 public class Dish {
+    private static long counter = 0;
+
+    private Long id;
     private String dishId;
     private String name;
     private String cuisine;
-    private int preperationTime;
+    private int preparationTime;
+
+    public Dish(String dishId, String name, String cuisine, int preparationTime) {
+        this.id = ++counter;
+        this.dishId = dishId;
+        this.name = name;
+        this.cuisine = cuisine;
+        this.preparationTime = preparationTime;
+    }
+
+    public Long getId() {
+        return id;
+    }
 
     public String getDishId() {
         return dishId;
+    }
+
+    public void setDishId(String dishId) {
+        this.dishId = dishId;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getCuisine() {
         return cuisine;
     }
 
-    public int getPreperationTime() {
-        return preperationTime;
-    }
-
-    public Dish(String dishId, String name, String cuisine, int preperationTime) {
-        this.dishId = dishId;
-        this.name = name;
+    public void setCuisine(String cuisine) {
         this.cuisine = cuisine;
-        this.preperationTime = preperationTime;
     }
 
+    public int getPreparationTime() {
+        return preparationTime;
+    }
+
+    public void setPreparationTime(int preparationTime) {
+        this.preparationTime = preparationTime;
+    }
 }
