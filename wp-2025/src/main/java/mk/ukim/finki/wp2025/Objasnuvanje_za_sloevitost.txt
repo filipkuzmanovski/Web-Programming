@@ -1,0 +1,36 @@
+Znachi imame 3 sloja kojshto se
+ koristat za prezentiranje na
+  arhitekturata kreirana vo spring
+  i tie 3 se presentaciskiot sloj
+   business logic layerot isto taka
+   poznat kako service layer i data
+   layer isto taka poznat kako repository
+presentaciskiot sloj se koristi
+za cuvanje na user interfacesot
+na dadenata strana i za cuvanje
+na jsoni i slicni raboti odnosno
+rest servicite na stranicata
+kaj prezentaciskiot sloj go imame mvc
+paternot odnosno model view i controller
+ kaj view ni stojat templateite kako
+htmlot i static delovite kako jsonot
+ kontroler e delot kojshto se koristi
+ za komunikacija pomegju sloevite
+ i najcesto se reprezentirani kako
+ servleti ili kako controleri podocna
+  ke ucime za toa i na kraj model
+   delot se odnesuva
+na podatocite kojshto treba da se
+ prezentirani vo view kojshto kontrolerot
+ gi prevzemal
+business logic layerot se koristi
+za cuvanje na logikata za stranciata
+ pravenje odluki kalkulacii evaluacii
+  i isto taka pomaga so procesiranje
+   na podatocite kojshto se mrdaat
+   pomegju dvata sloja i treba
+    da se pishe vo chista java
+i tretiot sloj data slojot se
+ koristi za interakcija so
+ databazite za zacuvuvanje na
+ aplikacisite podatoci
