@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add / Edit Dish</title>
+</head>
+<body>
+<div>
+    <form th:action="${id} != null ? @{'/dishes/edit/' + ${id}} : @{/dishes/add}" method="post">
+        <div>
+            <label for="dishId">Dish id:</label>
+            <input type="text" id="dishId" name="dishId" th:value="${dishId}" required placeholder="Enter dish ID">
+        </div>
+        <div>
+            <label for="name">Dish name:</label>
+            <input type="text" id="name" name="name" th:value="${name}" required placeholder="Enter dish name">
+        </div>
+        <div>
+            <label for="cuisine">Cuisine:</label>
+            <input type="text" id="cuisine" name="cuisine" th:value="${cuisine}" required placeholder="Enter cuisine">
+        </div>
+        <div>
+            <label for="preparationTime">Preparation time:</label>
+            <input type="number" id="preparationTime" name="preparationTime" th:value="${preparationTime}" required placeholder="Enter preparation time in minutes">
+        </div>
+        <div>
+            <label for="chef">Select Chef:</label>
+            <select id="chef" name="chefId" required>
+                <option th:each="chef : ${chefs}" th:value="${chef.id}" th:text="${chef.firstName} + ' ' + ${chef.lastName}" th:selected="${chef.id} == ${chefId}"></option>
+            </select>
+        </div>
+        <button type="submit">Submit</button>
+        <a href="/dishes">Back</a>
+    </form>
+</div>
+</body>
+</html>

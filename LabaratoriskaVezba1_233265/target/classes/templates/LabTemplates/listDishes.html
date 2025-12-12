@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Add Dish to Chef</title>
+    <link href="/main.css" type="text/css" rel="stylesheet">
+
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        table, td, th {
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        section {
+            float: left;
+            margin: 0 1.5%;
+            width: 63%;
+        }
+
+        aside {
+            float: right;
+            margin: 0 1.5%;
+            width: 30%;
+        }
+
+        /* --- New Styles for Better Appearance --- */
+        .dish-row {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #fafafa;
+        }
+
+        .dish-actions {
+            margin-top: 8px;
+            display: flex;
+            gap: 10px; /* space between buttons */
+        }
+
+        .dish-actions form {
+            margin: 0; /* Remove extra spacing */
+        }
+
+        button {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .add-new-wrapper {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Select the Dish to add to the Chef</h1>
+</header>
+
+<section>
+    <h2>Do you want to filter by chef? Select a chef below!</h2>
+    <div>
+        <h2>
+            <form method="get" action="/dishes">
+                <select name="chefId">
+                       <option  th:each="chef:${chefs}" th:value="${chef.id}" th:text="${chef.firstName} + ${chef.lastName}"></option>
+                </select>
+                <br>
+                <input type="submit" value="Submit">
+            </form>
+        </h2>
+    </div>
+
+    <h2>Select dish:</h2>
+
+    <!-- Dish rows -->
+    <div th:each="dish : ${Dishes}" class="dish-row">
+
+        <form th:action="@{/dishes/chefDetails}" method="POST">
+            <label>
+                <input type="radio" name="dishId" th:value="${dish.getDishId()}">
+            </label>
+
+            <input type="hidden" name="chefId" th:value="${chefId}">
+            <input type="submit" value="Add dish" style="margin-left: 15px;">
+        </form>
+
+        <span th:block th:text="${dish.getName()} + ' (' + ${dish.getCuisine()} + ')'"></span>
+
+        <!-- Buttons side by side -->
+        <div class="dish-actions">
+
+            <form th:method="delete"
+                  th:action="@{'/dishes/delete/{id}' (id=${dish.getId()})}">
+                <input type="hidden" name="chefId" th:value="${chefId}">
+                <button type="submit">Delete dish</button>
+            </form>
+
+            <form th:method="get"
+                  th:action="@{'/dishes/dish-form/{id}' (id=${dish.getId()})}">
+                <input type="hidden" name="chefId" th:value="${chefId}">
+                <button type="submit">Edit dish</button>
+            </form>
+
+        </div>
+    </div>
+
+    <div th:block th:if="${error}">
+        <h3 th:text="${errorMessage}" class="error"></h3>
+    </div>
+
+    <div class="add-new-wrapper">
+        <form th:method="get" th:action="@{'/dishes/dish-form'}">
+            <input type="hidden" name="chefId" th:value="${chefId}">
+            <button type="submit">Add a new dish to the list</button>
+        </form>
+    </div>
+
+    <h2>
+        Return to the list of chefs by clicking
+        <a th:href="@{/listChefs}">here</a>
+    </h2>
+
+</section>
+
+<aside>
+    <table>
+        <tr>
+            <td><b>Chef ID</b></td>
+            <td><th:block th:text="${chefId}"></th:block></td>
+        </tr>
+        <tr>
+            <td><b>Chef Name</b></td>
+            <td><th:block th:text="${chefName}"></th:block></td>
+        </tr>
+    </table>
+</aside>
+
+</body>
+</html>

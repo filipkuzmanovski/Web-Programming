@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Restaurant Chefs - Welcome to Our Restaurant</title>
+    <link href="/main.css" type="text/css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome to Our Restaurant</h1>
+</header>
+<main>
+    <h2>Choose a chef:</h2>
+    <form action="/dishes" method="POST">
+        <!-- Display radio buttons for each chef,
+             the value should be the chef id
+             and the displayed text should be:
+             Name: <firstName> <lastName>, Bio: <bio> -->
+        <div th:each="chef : ${Chefs}">
+            <label>
+                <input type="radio" name="chefId" th:value="${chef.id}">
+            </label>
+            <span th:block th:text="${chef.firstName} + ' ' +${chef.lastName} + ' ' + 'Bio: ' + ${chef.bio}"></span>
+        </div>
+        <input type="submit" value="submit">
+    </form>
+    <div th:block th:if="${error}">
+        <h3 th:block th:text="${errorMessage}" class="error"></h3>
+    </div>
+</main>
+</body>
+</html>
