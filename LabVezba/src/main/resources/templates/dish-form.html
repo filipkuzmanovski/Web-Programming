@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title th:text="${dishId} != null ? 'Edit Dish' : 'Add New Dish'">Add/Edit Dish</title>
     <style type="text/css">
-        /* Modernized Styles - Preserving all original form logic */
+        
         body {
             background-color: #f4f7f6;
             color: #2d3436;
@@ -45,7 +45,7 @@
             padding: 12px;
             border: 1px solid #dfe6e9;
             border-radius: 6px;
-            box-sizing: border-box; /* Crucial for padding */
+            box-sizing: border-box; 
             font-size: 1rem;
             transition: border-color 0.2s;
         }
@@ -130,4 +130,5 @@
     <a th:href="@{/dishes(chefId=${chefId})}" class="back-btn">Cancel and Go Back</a>
 </div>
 </body>
+
 </html>
