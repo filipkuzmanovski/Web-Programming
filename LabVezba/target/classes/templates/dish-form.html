@@ -2,26 +2,132 @@
 <html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>addDish</title>
+    <title th:text="${dishId} != null ? 'Edit Dish' : 'Add New Dish'">Add/Edit Dish</title>
+    <style type="text/css">
+        /* Modernized Styles - Preserving all original form logic */
+        body {
+            background-color: #f4f7f6;
+            color: #2d3436;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 60px 20px;
+        }
+        .form-container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        h2 {
+            margin-top: 0;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            font-size: 1.5rem;
+            text-align: center;
+            border-bottom: 2px solid #f1f1f1;
+            padding-bottom: 15px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #636e72;
+            font-size: 0.9rem;
+        }
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dfe6e9;
+            border-radius: 6px;
+            box-sizing: border-box; /* Crucial for padding */
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #4CAF50;
+            background-color: #f9fff9;
+        }
+        input[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+        .back-btn {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #b2bec3;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .back-btn:hover {
+            color: #636e72;
+        }
+    </style>
 </head>
 <body>
-<div>
-    <form th:action="${dishId}!=null ? @{'/dishes/edit/'+${dishId}} : @{'/dishes/add'}" method="post" sec:authorize="hasRole('ADMIN')">
+<div class="form-container">
+    <h2 th:text="${dishId} != null ? 'Edit Existing Dish' : 'Create New Dish'"></h2>
+
+    <form th:action="${dishId} != null ? @{'/dishes/edit/'+${dishId}} : @{'/dishes/add'}"
+          method="post"
+          sec:authorize="hasRole('ADMIN')">
+
         <input type="hidden" name="chefId" th:value="${chefId}">
-        <label>Dish id: </label>
-        <input type="text" name="dishId"  th:value="${foundDish}!=null ? ${foundDish.getDishId()} : ''"><br>
-        <label>Dish name: </label>
-        <input type="text" name="name" th:value="${foundDish}!=null ? ${foundDish.getName()} : ''"><br>
-        <label>Dish cuisine: </label>
-        <input type="text" name="cuisine" th:value="${foundDish}!=null ? ${foundDish.getCuisine()} : '' "><br>
-        <label>Preparation time: </label>
-        <input type="text" name="preparationTime" th:value="${foundDish}!=null ? ${foundDish.getPreparationTime()} : ''"><br>
-        <label>Chef: </label>
-        <select name="dishChefId">
-            <option th:each="chef:${chefs}" th:text="${chef.getFirstName()}" th:value="${chef.getId()}"></option>
-        </select>
-        <input type="submit" th:value="${dishId}!=null ? 'Edit dish' : 'Add dish'">
+
+        <div class="form-group">
+            <label>Dish ID</label>
+            <input type="text" name="dishId" th:value="${foundDish} != null ? ${foundDish.getDishId()} : ''" placeholder="e.g. D101">
+        </div>
+
+        <div class="form-group">
+            <label>Dish Name</label>
+            <input type="text" name="name" th:value="${foundDish} != null ? ${foundDish.getName()} : ''" placeholder="Enter dish name">
+        </div>
+
+        <div class="form-group">
+            <label>Cuisine Type</label>
+            <input type="text" name="cuisine" th:value="${foundDish} != null ? ${foundDish.getCuisine()} : '' " placeholder="e.g. Italian, Thai">
+        </div>
+
+        <div class="form-group">
+            <label>Preparation Time (minutes)</label>
+            <input type="text" name="preparationTime" th:value="${foundDish} != null ? ${foundDish.getPreparationTime()} : ''" placeholder="e.g. 45">
+        </div>
+
+        <div class="form-group">
+            <label>Assign to Chef</label>
+            <select name="dishChefId">
+                <option th:each="chef : ${chefs}"
+                        th:text="${chef.getFirstName() + ' ' + chef.getLastName()}"
+                        th:value="${chef.getId()}">
+                </option>
+            </select>
+        </div>
+
+        <input type="submit" th:value="${dishId} != null ? 'Save Changes' : 'Add Dish to Menu'">
     </form>
+
+    <a th:href="@{/dishes(chefId=${chefId})}" class="back-btn">Cancel and Go Back</a>
 </div>
 </body>
 </html>

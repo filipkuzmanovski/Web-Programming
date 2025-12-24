@@ -4,95 +4,175 @@
     <meta charset="utf-8">
     <title>Add Dish to Chef</title>
     <style type="text/css">
+        /* Modernized Styles - Preserving all original layout logic */
         body {
-            width: 800px;
+            background-color: #f4f7f6;
+            color: #2d3436;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 40px 0;
+        }
+        .container {
+            width: 900px;
             margin: auto;
-            font-family: Arial, sans-serif;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        header {
+            border-bottom: 2px solid #f1f1f1;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        h2 {
+            font-size: 1.2rem;
+            color: #636e72;
+            margin-bottom: 20px;
         }
         table {
             width: 100%;
-            margin-top: 20px;
             border-collapse: collapse;
-        }
-        table, td, th {
-            border: 1px solid black;
-            padding: 10px;
+            margin-bottom: 20px;
+            background: #fff;
         }
         th {
             background-color: #4CAF50;
             color: white;
+            text-align: left;
+            padding: 12px;
+            font-weight: 600;
+        }
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #edf2f7;
+        }
+        tr:hover {
+            background-color: #f9fbf9;
         }
         section {
             float: left;
-            margin: 0 1.5%;
-            width: 63%;
+            width: 66%;
         }
         aside {
             float: right;
-            margin: 0 1.5%;
-            width: 30%;
+            width: 28%;
+        }
+        /* Buttons and Inputs */
+        button, input[type="submit"] {
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .btn-edit {
+            background-color: #3498db;
+            color: white;
+        }
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+        input[type="submit"] {
+            background-color: #27ae60;
+            color: white;
+            font-weight: bold;
+            padding: 12px 20px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        input[type="submit"]:hover {
+            background-color: #219150;
+        }
+        .aside-table {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        .aside-table td {
+            border: none;
+            font-size: 0.9rem;
+        }
+        /* Clearfix for the floating layout */
+        .container::after {
+            content: "";
+            clear: both;
+            display: table;
         }
     </style>
 </head>
 <body>
-<header>
-    <h1>Select the Dish to add to the Chef</h1>
-</header>
-<section>
-    <h2>Select dish:</h2>
-    <form action="/chefDetails" method="POST">
-        <input type="hidden" name="chefId" th:value="${chefId}">
-        <table>
-            <thead>
-            <tr>
-                <th>Select</th>
-                <th>Dish Name</th>
-                <th>Cuisine</th>
-                <th>Preparation Time</th>
-                <th>Made by</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="dish : ${dishes}">
-                <td>
-                    <input type="radio" name="dishId" th:value="${dish.getId()}">
-                </td>
-                <td th:text="${dish.getName()}"></td>
-                <td th:text="${dish.getCuisine()}"></td>
-                <td th:text="${dish.getPreparationTime()}"></td>
-                <td th:text="${dish.getChef().getFirstName()}"></td>
-                <td>
+<div class="container">
+    <header>
+        <h1>Select the Dish to add to the Chef</h1>
+    </header>
 
-                    <a th:href="@{'/dishes/dish-form/{id}' (id=${dish.getId()},chefId=${chefId})}" sec:authorize="hasRole('ADMIN')">
-                        <button type="button">Edit</button>
-                    </a>
+    <section>
+        <h2>Select dish:</h2>
+        <form action="/chefDetails" method="POST">
+            <input type="hidden" name="chefId" th:value="${chefId}">
+            <table>
+                <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Dish Name</th>
+                    <th>Cuisine</th>
+                    <th>Time</th>
+                    <th>Made by</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="dish : ${dishes}">
+                    <td>
+                        <input type="radio" name="dishId" th:value="${dish.getId()}">
+                    </td>
+                    <td th:text="${dish.getName()}"></td>
+                    <td th:text="${dish.getCuisine()}"></td>
+                    <td th:text="${dish.getPreparationTime() + ' min'}"></td>
+                    <td th:text="${dish.getChef().getFirstName()}"></td>
+                    <td>
+                        <a th:href="@{'/dishes/dish-form/{id}' (id=${dish.getId()},chefId=${chefId})}" sec:authorize="hasRole('ADMIN')">
+                            <button type="button" class="btn-edit">Edit</button>
+                        </a>
+                        <a th:href="@{/dishes/delete/{id}(id=${dish.getId()}, chefId=${chefId})}" sec:authorize="hasRole('ADMIN')">
+                            <button type="button" class="btn-delete">Delete</button>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <input type="submit" value="Add Selected Dish" sec:authorize="hasRole('ADMIN')">
+        </form>
 
-                    <a th:href="@{/dishes/delete/{id}(id=${dish.getId()}, chefId=${chefId})}" sec:authorize="hasRole('ADMIN')">
-                        <button type="button">Delete</button>
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <input type="submit" value="Add dish" sec:authorize="hasRole('ADMIN')">
-    </form>
-    <form action="/dishes/dish-form" method="get" sec:authorize="hasRole('ADMIN')">
-        <input type="hidden" th:value="${chefId}" name="chefId">
-        <input type="submit" value="Add new dish to the list">
-    </form>
-</section>
-<aside>
-    <table>
-        <tr>
-            <td><b>Chef ID</b></td>
-            <td th:text="${chefId}"></td>
-        </tr>
-        <tr>
-            <td><b>Chef Name</b></td>
-            <td th:text="${chefName}"></td>
-        </tr>
-    </table>
-</aside>
+        <form action="/dishes/dish-form" method="get" sec:authorize="hasRole('ADMIN')" style="margin-top: 15px;">
+            <input type="hidden" th:value="${chefId}" name="chefId">
+            <input type="submit" value="+ Create New Dish" style="background-color: #34495e;">
+        </form>
+    </section>
+
+    <aside>
+        <div style="padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e1e4e8;">
+            <h3 style="margin-top: 0; font-size: 1rem; color: #2c3e50;">Active Chef</h3>
+            <table class="aside-table">
+                <tr>
+                    <td><b>ID:</b></td>
+                    <td th:text="${chefId}"></td>
+                </tr>
+                <tr>
+                    <td><b>Name:</b></td>
+                    <td th:text="${chefName}"></td>
+                </tr>
+            </table>
+        </div>
+    </aside>
+</div>
 </body>
 </html>
