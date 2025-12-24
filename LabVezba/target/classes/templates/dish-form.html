@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>addDish</title>
+</head>
+<body>
+<div>
+    <form th:action="${dishId}!=null ? @{'/dishes/edit/'+${dishId}} : @{'/dishes/add'}" method="post" sec:authorize="hasRole('ADMIN')">
+        <input type="hidden" name="chefId" th:value="${chefId}">
+        <label>Dish id: </label>
+        <input type="text" name="dishId"  th:value="${foundDish}!=null ? ${foundDish.getDishId()} : ''"><br>
+        <label>Dish name: </label>
+        <input type="text" name="name" th:value="${foundDish}!=null ? ${foundDish.getName()} : ''"><br>
+        <label>Dish cuisine: </label>
+        <input type="text" name="cuisine" th:value="${foundDish}!=null ? ${foundDish.getCuisine()} : '' "><br>
+        <label>Preparation time: </label>
+        <input type="text" name="preparationTime" th:value="${foundDish}!=null ? ${foundDish.getPreparationTime()} : ''"><br>
+        <label>Chef: </label>
+        <select name="dishChefId">
+            <option th:each="chef:${chefs}" th:text="${chef.getFirstName()}" th:value="${chef.getId()}"></option>
+        </select>
+        <input type="submit" th:value="${dishId}!=null ? 'Edit dish' : 'Add dish'">
+    </form>
+</div>
+</body>
+</html>
